@@ -96,7 +96,7 @@ function createAppearancePalette(basePalette, isDark) {
   };
 }
 
-function SectionHeading({ eyebrow, title, palette }) {
+function SectionHeading({ eyebrow, headingAs = "h2", title, palette }) {
   return (
     <Stack gap="2" maxW="760px">
       <Text
@@ -108,7 +108,7 @@ function SectionHeading({ eyebrow, title, palette }) {
       >
         {eyebrow}
       </Text>
-      <Heading color={palette.text} fontSize={{ base: "2xl", md: "4xl" }} lineHeight="1.1">
+      <Heading as={headingAs} color={palette.text} fontSize={{ base: "2xl", md: "4xl" }} lineHeight="1.1">
         {title}
       </Heading>
     </Stack>
@@ -365,7 +365,7 @@ function App() {
                   >
                     {t("hero.eyebrow")}
                   </Badge>
-                  <Heading fontSize={{ base: "4xl", md: "6xl" }} lineHeight="0.98">
+                  <Heading as="h1" fontSize={{ base: "4xl", md: "6xl" }} lineHeight="0.98">
                     {t("hero.title")}
                   </Heading>
                   <Text color={palette.accentText} fontSize={{ base: "xl", md: "2xl" }} fontWeight="700">
@@ -440,6 +440,7 @@ function App() {
                   <SimpleGrid columns={{ base: 1, md: 3 }} gap="4">
                     {t("about.highlights", { returnObjects: true }).map((highlight) => (
                       <Box
+                        as="article"
                         bg={palette.cardGradient}
                         border="1px solid"
                         borderColor={palette.border}
@@ -470,6 +471,7 @@ function App() {
                     const ExperienceIcon = experienceIcons[index] || Briefcase;
                     return (
                       <Stack
+                        as="article"
                         bg={palette.cardGradient}
                         border="1px solid"
                         borderColor={palette.border}
@@ -490,7 +492,7 @@ function App() {
                           <ExperienceIcon size={22} />
                         </Box>
                         <Stack gap="2">
-                          <Heading fontSize="md" lineHeight="1.25">
+                          <Heading as="h3" fontSize="md" lineHeight="1.25">
                             {item.title}
                           </Heading>
                           <Text color={palette.bodyText} fontSize="sm" lineHeight="1.65">
@@ -510,6 +512,7 @@ function App() {
                 <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} gap="5">
                   {skillGroups.map((group) => (
                     <Box
+                      as="article"
                       bg={palette.cardGradient}
                       border="1px solid"
                       borderColor={palette.border}
@@ -520,7 +523,7 @@ function App() {
                     >
                       <HStack gap="3" mb="5">
                         <Code2 color={palette.accentText} size={22} />
-                        <Heading fontSize="lg">{group.title}</Heading>
+                        <Heading as="h3" fontSize="lg">{group.title}</Heading>
                       </HStack>
                       <Flex gap="2" wrap="wrap">
                         {group.items.map((item) => (
@@ -549,6 +552,7 @@ function App() {
 
                     return (
                       <Stack
+                        as="article"
                         bg={palette.cardGradient}
                         border="1px solid"
                         borderColor={palette.border}
@@ -562,7 +566,7 @@ function App() {
                           <ProjectIcon size={24} />
                         </Box>
                         <Stack gap="2">
-                          <Heading fontSize="xl" lineHeight="1.2">
+                          <Heading as="h3" fontSize="xl" lineHeight="1.2">
                             {project.title}
                           </Heading>
                           <Text color={palette.accentText} fontSize="sm" fontWeight="700">
@@ -647,7 +651,7 @@ function App() {
                   </Stack>
                 </Stack>
                 <Box>
-                  <Heading fontSize="xl" mb="5">
+                  <Heading as="h3" fontSize="xl" mb="5">
                     {t("contact.formTitle")}
                   </Heading>
                   <Box as="form" action="https://formspree.io/f/xeqwajpz" method="POST">
