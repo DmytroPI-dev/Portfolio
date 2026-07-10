@@ -1,68 +1,67 @@
 # Dmytro Pishchenkov | Portfolio
 
-Welcome to the source code for my personal landing page! I use this space as my digital business card to showcase my work across Platform Engineering, Cloud Operations, and DevSecOps.
+This is the source code for my personal portfolio at `portfolio.dmytro-dev.net`. I use it as a focused engineering profile for Platform Engineering, Cloud Operations, and DevSecOps work.
 
-## What's Baked In
+## What It Includes
 
-I wanted the site to be fast, accessible, and easy to navigate. Here is what it currently features:
+I built the site to be fast, accessible, readable, and easy to keep updated. It currently includes:
 
-* **Trilingual Support:** English, Ukrainian, and Polish (handled via `react-i18next`).
-* **Theming:** Language-specific visual themes, plus the mandatory Light/Dark mode toggle.
-* **The Goods:** Easy access to my downloadable CV, live project demos, and repository links.
-* **The Highlights:** A breakdown of my core work, emphasizing Kubernetes automation, IaC (Terraform), Go/Python/Bash scripting, and observability.
+* **Trilingual support:** English, Ukrainian, and Polish via `react-i18next`.
+* **Adaptive theming:** Language-specific visual themes with light and dark mode support.
+* **Portfolio assets:** Direct access to my CV, live demos, repository links, and contact options.
+* **Engineering focus:** Kubernetes automation, Terraform, Go/Python/Bash scripting, cloud operations, security, and observability.
+* **Machine-readable structure:** Prerendered HTML, semantic sections, SEO metadata, OpenGraph tags, `robots.txt`, `sitemap.xml`, and JSON-LD profile data.
 
-### Featured Projects
+## Featured Work
 
-If you are poking around to see what I build, the portfolio specifically highlights:
+The portfolio highlights selected work across platform engineering and cloud infrastructure:
 
 * **Splunk Operator:** PostgreSQL Platform Controllers
 * **AWS RDS Fleet Upgrade & Graviton Migration**
 * **Serverless Cloud-Native Web Application**
 
-## Under the Hood (The Stack)
+## Stack
 
-While I spend most of my day wrestling with Kubernetes and cloud infrastructure, I built this frontend using:
+The frontend is intentionally lightweight and built with:
 
-* **Vite** (for that sweet, lightning-fast build time)
+* **Vite**
 * **React**
-* **Chakra UI** (for clean, accessible component styling)
+* **Chakra UI**
+* **i18next / react-i18next**
+
+The production build prerenders the main route into static HTML so the primary content is visible to crawlers before client-side hydration.
 
 ## Spin It Up Locally
-
-Want to run it on your machine? It's pretty straightforward.
 
 **1. Install dependencies:**
 
 ```bash
 npm install
-
 ```
 
 **2. Start the dev server:**
 
 ```bash
 npm run dev
-
 ```
 
-**3. Build for production:**
+**3. Build for production, including prerendering:**
 
 ```bash
 npm run build
-
 ```
 
 **4. Preview the production build:**
 
 ```bash
 npm run preview
-
 ```
 
-## How It Ships (Deployment)
+## Deployment
 
-This site is deployed and hosted using **Azure Static Web Apps**.
+The site is deployed and hosted with **Azure Static Web Apps**.
 
-* **CI/CD Pipeline:** Fully automated via GitHub Actions (you can check out the workflow at `.github/workflows/azure-static-web-apps-ashy-bay-06902e503.yml`).
-* **Workflow Target:** Pushes to the `master` branch trigger deployments from the `/` app location, outputting to the `dist` directory (API location is currently empty).
-* **Routing:** SPA routing fallback and custom headers are managed cleanly via `public/staticwebapp.config.json`.
+* **Live site:** `https://portfolio.dmytro-dev.net`
+* **CI/CD pipeline:** GitHub Actions workflow at `.github/workflows/azure-static-web-apps-ashy-bay-06902e503.yml`.
+* **Workflow target:** Pushes to `master` trigger deployments from the `/` app location, publishing the `dist` output.
+* **Routing and headers:** Azure Static Web Apps behavior is configured through `public/staticwebapp.config.json`.
