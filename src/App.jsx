@@ -152,14 +152,8 @@ function ProjectActionHoverCard({ children, label, note, palette, url }) {
 function App() {
   const { i18n, t } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [appearance, setAppearance] = useState(() => {
-    if (typeof window === "undefined") return "light";
-
-    const storedAppearance = window.localStorage.getItem("portfolioAppearance");
-    if (storedAppearance === "light" || storedAppearance === "dark") return storedAppearance;
-
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-  });
+  const [appearance, setAppearance] = useState("light");
+  const [isAppearanceLoaded, setIsAppearanceLoaded] = useState(false);
   const currentLanguage = i18n.language?.slice(0, 2) || "en";
   const palette = createAppearancePalette(
     languageThemes[currentLanguage] || languageThemes.en,
@@ -213,8 +207,36 @@ function App() {
   };
 
   useEffect(() => {
-    window.localStorage.setItem("portfolioAppearance", appearance);
-  }, [appearance]);
+    const supportedLanguageCodes = languages.map((language) => language.code);
+    const savedLanguage = window.localStorage.getItem("portfolioLanguage");
+    const browserLanguage = navigator.language?.slice(0, 2);
+    const preferredLanguage =
+      savedLanguage ||
+      (supportedLanguageCodes.includes(browserLanguage) ? browserLanguage : "en");
+
+    if (preferredLanguage !== i18n.language) {
+      i18n.changeLanguage(preferredLanguage);
+    }
+  }, [i18n]);
+
+  useEffect(() => {
+    const storedAppearance = window.localStorage.getItem("portfolioAppearance");
+    const preferredAppearance =
+      storedAppearance === "light" || storedAppearance === "dark"
+        ? storedAppearance
+        : window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+
+    setAppearance(preferredAppearance);
+    setIsAppearanceLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (isAppearanceLoaded) {
+      window.localStorage.setItem("portfolioAppearance", appearance);
+    }
+  }, [appearance, isAppearanceLoaded]);
 
   const changeLanguage = (languageCode) => {
     window.localStorage.setItem("portfolioLanguage", languageCode);
