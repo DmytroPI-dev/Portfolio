@@ -1,16 +1,14 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { ChakraProvider } from "@chakra-ui/react";
+import { createRoot, hydrateRoot } from "react-dom/client";
 
-import App from "./App.jsx";
-import { system } from "./theme/system.js";
-import "./i18n/config.js";
-import "./styles.css";
+import AppRoot from "./AppRoot.jsx";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <ChakraProvider value={system}>
-      <App />
-    </ChakraProvider>
-  </React.StrictMode>,
-);
+const rootElement = document.getElementById("root");
+const hasPrerenderedHtml =
+  rootElement.innerHTML.trim() !== "" &&
+  !rootElement.innerHTML.includes("app-html");
+
+if (hasPrerenderedHtml) {
+  hydrateRoot(rootElement, <AppRoot />);
+} else {
+  createRoot(rootElement).render(<AppRoot />);
+}
