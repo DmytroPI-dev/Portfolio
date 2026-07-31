@@ -686,7 +686,12 @@ function App() {
                   <Heading as="h3" fontSize="xl" mb="5">
                     {t("contact.formTitle")}
                   </Heading>
-                  <Box as="form" action="https://formspree.io/f/xeqwajpz" method="POST">
+                  <Box
+                    as="form"
+                    action="https://formspree.io/f/xeqwajpz"
+                    method="POST"
+                    onSubmit={(event) => event.currentTarget.reset()}
+                  >
                     <Stack gap="4">
                       <Input aria-label={t("contact.name")} name="name" placeholder={t("contact.name")} required {...formFieldStyles} />
                       <Input aria-label={t("contact.emailPlaceholder")} name="email" placeholder={t("contact.emailPlaceholder")} required type="email" {...formFieldStyles} />
