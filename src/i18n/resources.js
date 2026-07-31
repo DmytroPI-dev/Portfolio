@@ -153,6 +153,9 @@ export const resources = {
         subject: "Subject",
         message: "Message",
         send: "Send",
+        sending: "Sending…",
+        success: "Thanks — your message was sent.",
+        error: "Could not send your message. Please try again.",
       },
       footerName: "Dmytro Pishchenkov",
       footer:
@@ -314,6 +317,9 @@ export const resources = {
         subject: "Тема",
         message: "Повідомлення",
         send: "Надіслати",
+        sending: "Надсилання…",
+        success: "Дякую — ваше повідомлення надіслано.",
+        error: "Не вдалося надіслати повідомлення. Спробуйте ще раз.",
       },
       footerName: "Дмитро Піщенков",
       footer:
@@ -476,6 +482,9 @@ export const resources = {
         subject: "Temat",
         message: "Wiadomość",
         send: "Wyślij",
+        sending: "Wysyłanie…",
+        success: "Dziękuję — wiadomość została wysłana.",
+        error: "Nie udało się wysłać wiadomości. Spróbuj ponownie.",
       },
       footerName: "Dmytro Pishchenkov",
       footer:
