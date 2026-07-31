@@ -81,6 +81,6 @@ export const languageThemes = {
 export const socialLinks = {
   github: "https://github.com/DmytroPI-dev",
   linkedin: "https://www.linkedin.com/in/dmytro-pishchenkov-543a52232/",
-  email: "mailto:demetriy.78@gmail.com",
+  email: "mailto:contact@dmytro-dev.net",
   calendly: "https://calendly.com/demetriy-78/30min",
 };

@@ -400,6 +400,16 @@ function App() {
                 <Flex gap="3" wrap="wrap">
                   <Button
                     as="a"
+                    href={socialLinks.calendly}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    {...heroButtonStyles}
+                  >
+                    <CalendarDays size={18} />
+                    {t("hero.scheduleCall")}
+                  </Button>
+                  <Button
+                    as="a"
                     href={resumeHref}
                     target="_blank"
                     rel="noopener noreferrer"
