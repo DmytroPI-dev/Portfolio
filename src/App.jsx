@@ -16,6 +16,8 @@ import {
   Text,
   Textarea,
   Theme,
+  Toast,
+  Toaster,
 } from "@chakra-ui/react";
 import {
   Activity,
@@ -149,11 +151,13 @@ function ProjectActionHoverCard({ children, label, note, palette, url }) {
   );
 }
 
-function App() {
+function App({ toaster }) {
   const { i18n, t } = useTranslation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [appearance, setAppearance] = useState("light");
   const [isAppearanceLoaded, setIsAppearanceLoaded] = useState(false);
+  const [isContactSubmitting, setIsContactSubmitting] = useState(false);
+  const [contactSubmitState, setContactSubmitState] = useState(null);
   const currentLanguage = i18n.language?.slice(0, 2) || "en";
   const palette = createAppearancePalette(
     languageThemes[currentLanguage] || languageThemes.en,
@@ -248,6 +252,41 @@ function App() {
     setAppearance((currentAppearance) =>
       currentAppearance === "dark" ? "light" : "dark",
     );
+  };
+
+  const handleContactSubmit = async (event) => {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    setIsContactSubmitting(true);
+    setContactSubmitState(null);
+
+    try {
+      const response = await fetch(form.action, {
+        method: form.method.toUpperCase(),
+        body: new FormData(form),
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Formspree request failed with status ${response.status}`);
+      }
+
+      form.reset();
+      setContactSubmitState(null);
+      toaster.create({
+        title: t("contact.success"),
+        type: "success",
+        duration: 5000,
+        closable: true,
+      });
+    } catch {
+      setContactSubmitState("error");
+    } finally {
+      setIsContactSubmitting(false);
+    }
   };
 
   return (
@@ -690,16 +729,26 @@ function App() {
                     as="form"
                     action="https://formspree.io/f/xeqwajpz"
                     method="POST"
-                    onSubmit={(event) => event.currentTarget.reset()}
+                    onSubmit={handleContactSubmit}
                   >
                     <Stack gap="4">
                       <Input aria-label={t("contact.name")} name="name" placeholder={t("contact.name")} required {...formFieldStyles} />
                       <Input aria-label={t("contact.emailPlaceholder")} name="email" placeholder={t("contact.emailPlaceholder")} required type="email" {...formFieldStyles} />
                       <Input aria-label={t("contact.subject")} name="subject" placeholder={t("contact.subject")} required {...formFieldStyles} />
                       <Textarea aria-label={t("contact.message")} minH="140px" name="message" placeholder={t("contact.message")} required {...formFieldStyles} />
-                      <Button alignSelf="flex-start" type="submit" {...heroButtonStyles}>
-                        {t("contact.send")}
+                      <Button alignSelf="flex-start" disabled={isContactSubmitting} type="submit" {...heroButtonStyles}>
+                        {isContactSubmitting ? t("contact.sending") : t("contact.send")}
                       </Button>
+                      {contactSubmitState === "error" ? (
+                        <Text
+                          aria-live="polite"
+                          color={palette.secondary}
+                          fontSize="sm"
+                          role="alert"
+                        >
+                          {t("contact.error")}
+                        </Text>
+                      ) : null}
                     </Stack>
                   </Box>
                 </Box>
@@ -730,6 +779,26 @@ function App() {
           </Text>
         </Container>
       </Box>
+      <Toaster toaster={toaster}>
+        {(toast) => (
+          <Toast.Root
+            border="1px solid"
+            borderColor={palette.border}
+            boxShadow={palette.buttonGlow || palette.glow}
+            color={palette.buttonText}
+            style={{ background: palette.buttonGradient }}
+            w={{ base: "calc(100vw - 2rem)", md: "sm" }}
+          >
+            <Toast.Indicator />
+            <Box flex="1" minW="0" pe="4">
+              <Text color="inherit" fontSize="sm" fontWeight="600">
+                {toast.title}
+              </Text>
+            </Box>
+            <Toast.CloseTrigger />
+          </Toast.Root>
+        )}
+      </Toaster>
       </Box>
     </Theme>
   );
