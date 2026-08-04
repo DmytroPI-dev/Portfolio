@@ -292,513 +292,670 @@ function App({ toaster }) {
   return (
     <Theme appearance={appearance}>
       <Box bg={palette.appBg} color={palette.text} minH="100vh">
-      <Box
-        aria-hidden="true"
-        bg={palette.drawerGradient}
-        boxShadow={palette.glow}
-        display={{ base: "none", md: "block" }}
-        h="100vh"
-        left="0"
-        pointerEvents="none"
-        position="fixed"
-        top="0"
-        w="10px"
-        zIndex="30"
-      />
-      <Box bg={accentStripe} h="5px" />
-      <Box
-        as="header"
-        bg={palette.headerBg}
-        borderBottom="1px solid"
-        borderColor={palette.border}
-        position="sticky"
-        top="0"
-        zIndex="20"
-        style={{ backdropFilter: "blur(16px)" }}
-      >
-        <Container maxW="1180px" py="4">
-          <Flex align="center" gap="4" justify="space-between">
-            <Box as="a" href="#top" fontWeight="800">
-              DP
-            </Box>
-            <HStack as="nav" display={{ base: "none", md: "flex" }} gap="1">
+        <Box
+          aria-hidden="true"
+          bg={palette.drawerGradient}
+          boxShadow={palette.glow}
+          display={{ base: "none", md: "block" }}
+          h="100vh"
+          left="0"
+          pointerEvents="none"
+          position="fixed"
+          top="0"
+          w="10px"
+          zIndex="30"
+        />
+        <Box bg={accentStripe} h="5px" />
+        <Box
+          as="header"
+          bg={palette.headerBg}
+          borderBottom="1px solid"
+          borderColor={palette.border}
+          position="sticky"
+          top="0"
+          zIndex="20"
+          style={{ backdropFilter: "blur(16px)" }}
+        >
+          <Container maxW="1180px" py="4">
+            <Flex align="center" gap="4" justify="space-between">
+              <Box as="a" href="#top" fontWeight="800">
+                DP
+              </Box>
+              <HStack as="nav" display={{ base: "none", md: "flex" }} gap="1">
+                {navItems.map((item) => (
+                  <Button
+                    as="a"
+                    href={`#${item}`}
+                    key={item}
+                    size="sm"
+                    variant="ghost"
+                    color={palette.text}
+                  >
+                    {nav[item]}
+                  </Button>
+                ))}
+              </HStack>
+              <HStack gap="2">
+                <HStack aria-label={t("languageLabel")} gap="1">
+                  {languages.map((language) => {
+                    const isActive = currentLanguage === language.code;
+                    return (
+                      <Button
+                        aria-pressed={isActive}
+                        bg={isActive ? palette.primary : "transparent"}
+                        color={isActive ? "white" : palette.text}
+                        border="1px solid"
+                        borderColor={
+                          isActive ? palette.primary : palette.border
+                        }
+                        key={language.code}
+                        onClick={() => changeLanguage(language.code)}
+                        size="sm"
+                        variant="plain"
+                      >
+                        {language.shortLabel}
+                      </Button>
+                    );
+                  })}
+                </HStack>
+                <IconButton
+                  aria-label={
+                    appearance === "dark"
+                      ? "Switch to light theme"
+                      : "Switch to dark theme"
+                  }
+                  bg={palette.cardGradient}
+                  border="1px solid"
+                  borderColor={palette.border}
+                  boxShadow={palette.cardShadow}
+                  color={palette.accentText}
+                  onClick={toggleAppearance}
+                  size="sm"
+                  variant="ghost"
+                  _hover={{ bg: palette.muted, transform: "translateY(-1px)" }}
+                >
+                  {appearance === "dark" ? (
+                    <Sun size={18} />
+                  ) : (
+                    <Moon size={18} />
+                  )}
+                </IconButton>
+                <Button
+                  aria-controls="mobile-navigation"
+                  aria-expanded={isMobileMenuOpen}
+                  aria-label={
+                    isMobileMenuOpen
+                      ? t("mobileMenu.close")
+                      : t("mobileMenu.open")
+                  }
+                  display={{ base: "inline-flex", md: "none" }}
+                  onClick={() => setIsMobileMenuOpen((isOpen) => !isOpen)}
+                  size="sm"
+                  variant="outline"
+                >
+                  {isMobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
+                </Button>
+              </HStack>
+            </Flex>
+            <Stack
+              as="nav"
+              borderTop={isMobileMenuOpen ? "1px solid" : "0"}
+              borderColor={palette.border}
+              display={{ base: isMobileMenuOpen ? "flex" : "none", md: "none" }}
+              gap="1"
+              id="mobile-navigation"
+              mt={isMobileMenuOpen ? "4" : "0"}
+              pt={isMobileMenuOpen ? "4" : "0"}
+            >
               {navItems.map((item) => (
                 <Button
                   as="a"
-                  href={`#${item}`}
-                  key={item}
-                  size="sm"
-                  variant="ghost"
                   color={palette.text}
+                  href={`#${item}`}
+                  justifyContent="flex-start"
+                  key={item}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  variant="ghost"
                 >
                   {nav[item]}
                 </Button>
               ))}
-            </HStack>
-            <HStack gap="2">
-              <HStack aria-label={t("languageLabel")} gap="1">
-                {languages.map((language) => {
-                  const isActive = currentLanguage === language.code;
-                  return (
-                    <Button
-                      aria-pressed={isActive}
-                      bg={isActive ? palette.primary : "transparent"}
-                      color={isActive ? "white" : palette.text}
-                      border="1px solid"
-                      borderColor={isActive ? palette.primary : palette.border}
-                      key={language.code}
-                      onClick={() => changeLanguage(language.code)}
-                      size="sm"
-                      variant="plain"
-                    >
-                      {language.shortLabel}
-                    </Button>
-                  );
-                })}
-              </HStack>
-              <IconButton
-                aria-label={appearance === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-                bg={palette.cardGradient}
-                border="1px solid"
-                borderColor={palette.border}
-                boxShadow={palette.cardShadow}
-                color={palette.accentText}
-                onClick={toggleAppearance}
-                size="sm"
-                variant="ghost"
-                _hover={{ bg: palette.muted, transform: "translateY(-1px)" }}
-              >
-                {appearance === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-              </IconButton>
-              <Button
-                aria-controls="mobile-navigation"
-                aria-expanded={isMobileMenuOpen}
-                aria-label={isMobileMenuOpen ? t("mobileMenu.close") : t("mobileMenu.open")}
-                display={{ base: "inline-flex", md: "none" }}
-                onClick={() => setIsMobileMenuOpen((isOpen) => !isOpen)}
-                size="sm"
-                variant="outline"
-              >
-                {isMobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
-              </Button>
-            </HStack>
-          </Flex>
-          <Stack
-            as="nav"
-            borderTop={isMobileMenuOpen ? "1px solid" : "0"}
-            borderColor={palette.border}
-            display={{ base: isMobileMenuOpen ? "flex" : "none", md: "none" }}
-            gap="1"
-            id="mobile-navigation"
-            mt={isMobileMenuOpen ? "4" : "0"}
-            pt={isMobileMenuOpen ? "4" : "0"}
-          >
-            {navItems.map((item) => (
-              <Button
-                as="a"
-                color={palette.text}
-                href={`#${item}`}
-                justifyContent="flex-start"
-                key={item}
-                onClick={() => setIsMobileMenuOpen(false)}
-                variant="ghost"
-              >
-                {nav[item]}
-              </Button>
-            ))}
-          </Stack>
-        </Container>
-      </Box>
-
-      <Box as="main" id="top">
-        <Box bg={palette.heroGradient}>
-          <Container maxW="1180px" py={{ base: "14", md: "24" }}>
-            <Grid alignItems="center" gap={{ base: "10", lg: "16" }} templateColumns={{ base: "1fr", lg: "1.05fr 0.95fr" }}>
-              <Stack gap="7">
-                <Stack gap="4">
-                  <Badge
-                    alignSelf="flex-start"
-                    bg={palette.muted}
-                    color={palette.accentText}
-                    px="3"
-                    py="1"
-                    rounded="full"
-                  >
-                    {t("hero.eyebrow")}
-                  </Badge>
-                  <Heading as="h1" fontSize={{ base: "4xl", md: "6xl" }} lineHeight="0.98">
-                    {t("hero.title")}
-                  </Heading>
-                  <Text color={palette.accentText} fontSize={{ base: "xl", md: "2xl" }} fontWeight="700">
-                    {t("hero.subtitle")}
-                  </Text>
-                  <Text color={palette.bodyText} fontSize={{ base: "md", md: "lg" }} lineHeight="1.75" maxW="720px">
-                    {t("hero.body")}
-                  </Text>
-                </Stack>
-                <Flex gap="3" wrap="wrap">
-                  <Button
-                    as="a"
-                    href={socialLinks.calendly}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    {...heroButtonStyles}
-                  >
-                    <CalendarDays size={18} />
-                    {t("hero.scheduleCall")}
-                  </Button>
-                  <Button
-                    as="a"
-                    href={resumeHref}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    {...heroButtonStyles}
-                  >
-                    {t("hero.resume")}
-                  </Button>
-                  <Button
-                    as="a"
-                    href={socialLinks.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    {...heroButtonStyles}
-                  >
-                    <Github size={18} />
-                    {t("hero.github")}
-                  </Button>
-                  <Button
-                    as="a"
-                    href={socialLinks.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    {...heroButtonStyles}
-                  >
-                    <Linkedin size={18} />
-                    {t("hero.linkedin")}
-                  </Button>
-                </Flex>
-              </Stack>
-              <Box
-                bg={palette.cardGradient}
-                border="1px solid"
-                borderColor={palette.border}
-                boxShadow={palette.glow}
-                maxW="420px"
-                mx={{ base: "auto", lg: "0" }}
-                overflow="hidden"
-                rounded="2xl"
-              >
-                <Image alt="Dmytro Pishchenkov" aspectRatio="1" objectFit="cover" src={profilePhoto} w="100%" />
-                <Box p="5">
-                  <Text color={palette.locationText} fontSize="sm">
-                    Krakow, Poland
-                  </Text>
-                </Box>
-              </Box>
-            </Grid>
+            </Stack>
           </Container>
         </Box>
 
-        <Container maxW="1180px" py={{ base: "14", md: "20" }}>
-          <Stack gap={{ base: "16", md: "24" }}>
-            <Box as="section" id="about" scrollMarginTop="96px">
-              <Grid gap="8" templateColumns={{ base: "1fr", lg: "0.9fr 1.1fr" }}>
-                <SectionHeading eyebrow={t("about.eyebrow")} palette={palette} title={t("about.title")} />
-                <Stack gap="6">
-                  <Text color={palette.bodyText} fontSize={{ base: "md", md: "lg" }} lineHeight="1.8">
-                    {t("about.body")}
+        <Box as="main" id="top">
+          <Box bg={palette.heroGradient}>
+            <Container maxW="1180px" py={{ base: "14", md: "24" }}>
+              <Grid
+                alignItems="center"
+                gap={{ base: "10", lg: "16" }}
+                templateColumns={{ base: "1fr", lg: "1.05fr 0.95fr" }}
+              >
+                <Stack gap="7">
+                  <Stack gap="4">
+                    <Badge
+                      alignSelf="flex-start"
+                      bg={palette.muted}
+                      color={palette.accentText}
+                      px="3"
+                      py="1"
+                      rounded="full"
+                    >
+                      {t("hero.eyebrow")}
+                    </Badge>
+                    <Heading
+                      as="h1"
+                      fontSize={{ base: "4xl", md: "6xl" }}
+                      lineHeight="0.98"
+                    >
+                      {t("hero.title")}
+                    </Heading>
+                    <Text
+                      color={palette.accentText}
+                      fontSize={{ base: "xl", md: "2xl" }}
+                      fontWeight="700"
+                    >
+                      {t("hero.subtitle")}
+                    </Text>
+                    <Text
+                      color={palette.bodyText}
+                      fontSize={{ base: "md", md: "lg" }}
+                      lineHeight="1.75"
+                      maxW="720px"
+                    >
+                      {t("hero.body")}
+                    </Text>
+                  </Stack>
+                  <Flex gap="3" wrap="wrap">
+                    <Button
+                      as="a"
+                      href={socialLinks.calendly}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      {...heroButtonStyles}
+                    >
+                      <CalendarDays size={18} />
+                      {t("hero.scheduleCall")}
+                    </Button>
+                    <Button
+                      as="a"
+                      href={resumeHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      {...heroButtonStyles}
+                    >
+                      {t("hero.resume")}
+                    </Button>
+                    <Button
+                      as="a"
+                      href={socialLinks.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      {...heroButtonStyles}
+                    >
+                      <Github size={18} />
+                      {t("hero.github")}
+                    </Button>
+                    <Button
+                      as="a"
+                      href={socialLinks.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      {...heroButtonStyles}
+                    >
+                      <Linkedin size={18} />
+                      {t("hero.linkedin")}
+                    </Button>
+                  </Flex>
+                </Stack>
+                <Box
+                  bg={palette.cardGradient}
+                  border="1px solid"
+                  borderColor={palette.border}
+                  boxShadow={palette.glow}
+                  maxW="420px"
+                  mx={{ base: "auto", lg: "0" }}
+                  overflow="hidden"
+                  rounded="2xl"
+                >
+                  <Image
+                    alt="Dmytro Pishchenkov"
+                    aspectRatio="1"
+                    objectFit="cover"
+                    src={profilePhoto}
+                    w="100%"
+                  />
+                  <Box p="5">
+                    <Text color={palette.locationText} fontSize="sm">
+                      Krakow, Poland
+                    </Text>
+                  </Box>
+                </Box>
+              </Grid>
+            </Container>
+          </Box>
+
+          <Container maxW="1180px" py={{ base: "14", md: "20" }}>
+            <Stack gap={{ base: "16", md: "24" }}>
+              <Box as="section" id="about" scrollMarginTop="96px">
+                <Grid
+                  gap="8"
+                  templateColumns={{ base: "1fr", lg: "0.9fr 1.1fr" }}
+                >
+                  <SectionHeading
+                    eyebrow={t("about.eyebrow")}
+                    palette={palette}
+                    title={t("about.title")}
+                  />
+                  <Stack gap="6">
+                    <Text
+                      color={palette.bodyText}
+                      fontSize={{ base: "md", md: "lg" }}
+                      lineHeight="1.8"
+                    >
+                      {t("about.body")}
+                    </Text>
+                    <SimpleGrid columns={{ base: 1, md: 3 }} gap="4">
+                      {t("about.highlights", { returnObjects: true }).map(
+                        (highlight) => (
+                          <Box
+                            as="article"
+                            bg={palette.cardGradient}
+                            border="1px solid"
+                            borderColor={palette.border}
+                            boxShadow={palette.cardShadow}
+                            key={highlight}
+                            p="5"
+                            rounded="xl"
+                          >
+                            <ShieldCheck color={palette.accentText} size={22} />
+                            <Text
+                              fontSize="sm"
+                              fontWeight="700"
+                              lineHeight="1.55"
+                              mt="4"
+                            >
+                              {highlight}
+                            </Text>
+                          </Box>
+                        ),
+                      )}
+                    </SimpleGrid>
+                  </Stack>
+                </Grid>
+              </Box>
+
+              <Box as="section" id="experience" scrollMarginTop="96px">
+                <Stack gap="8">
+                  <SectionHeading
+                    eyebrow={t("experience.eyebrow")}
+                    palette={palette}
+                    title={t("experience.title")}
+                  />
+                  <Text color={palette.sectionNote} maxW="720px">
+                    {t("experience.body")}
                   </Text>
-                  <SimpleGrid columns={{ base: 1, md: 3 }} gap="4">
-                    {t("about.highlights", { returnObjects: true }).map((highlight) => (
+                  <SimpleGrid columns={{ base: 1, md: 3 }} gap="5">
+                    {experienceItems.map((item, index) => {
+                      const ExperienceIcon =
+                        experienceIcons[index] || Briefcase;
+                      return (
+                        <Stack
+                          as="article"
+                          bg={palette.cardGradient}
+                          border="1px solid"
+                          borderColor={palette.border}
+                          boxShadow={palette.cardShadow}
+                          gap="5"
+                          h="100%"
+                          key={item.title}
+                          p="6"
+                          rounded="2xl"
+                        >
+                          <Box
+                            bg={palette.muted}
+                            color={palette.accentText}
+                            p="3"
+                            rounded="xl"
+                            w="fit-content"
+                          >
+                            <ExperienceIcon size={22} />
+                          </Box>
+                          <Stack gap="2">
+                            <Heading as="h3" fontSize="md" lineHeight="1.25">
+                              {item.title}
+                            </Heading>
+                            <Text
+                              color={palette.bodyText}
+                              fontSize="sm"
+                              lineHeight="1.65"
+                            >
+                              {item.description}
+                            </Text>
+                          </Stack>
+                        </Stack>
+                      );
+                    })}
+                  </SimpleGrid>
+                </Stack>
+              </Box>
+
+              <Box as="section" id="skills" scrollMarginTop="96px">
+                <Stack gap="8">
+                  <SectionHeading
+                    eyebrow={t("skills.eyebrow")}
+                    palette={palette}
+                    title={t("skills.title")}
+                  />
+                  <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} gap="5">
+                    {skillGroups.map((group) => (
                       <Box
                         as="article"
                         bg={palette.cardGradient}
                         border="1px solid"
                         borderColor={palette.border}
                         boxShadow={palette.cardShadow}
-                        key={highlight}
-                        p="5"
-                        rounded="xl"
+                        key={group.title}
+                        p="6"
+                        rounded="2xl"
                       >
-                        <ShieldCheck color={palette.accentText} size={22} />
-                        <Text fontSize="sm" fontWeight="700" lineHeight="1.55" mt="4">
-                          {highlight}
-                        </Text>
+                        <HStack gap="3" mb="5">
+                          <Code2 color={palette.accentText} size={22} />
+                          <Heading as="h3" fontSize="lg">
+                            {group.title}
+                          </Heading>
+                        </HStack>
+                        <Flex gap="2" wrap="wrap">
+                          {group.items.map((item) => (
+                            <Badge
+                              bg={palette.muted}
+                              color={palette.accentText}
+                              key={item}
+                              px="3"
+                              py="1"
+                              rounded="full"
+                            >
+                              {item}
+                            </Badge>
+                          ))}
+                        </Flex>
                       </Box>
                     ))}
                   </SimpleGrid>
                 </Stack>
-              </Grid>
-            </Box>
+              </Box>
 
-            <Box as="section" id="experience" scrollMarginTop="96px">
-              <Stack gap="8">
-                <SectionHeading eyebrow={t("experience.eyebrow")} palette={palette} title={t("experience.title")} />
-                <Text color={palette.sectionNote} maxW="720px">
-                  {t("experience.body")}
-                </Text>
-                <SimpleGrid columns={{ base: 1, md: 3 }} gap="5">
-                  {experienceItems.map((item, index) => {
-                    const ExperienceIcon = experienceIcons[index] || Briefcase;
-                    return (
-                      <Stack
-                        as="article"
-                        bg={palette.cardGradient}
-                        border="1px solid"
-                        borderColor={palette.border}
-                        boxShadow={palette.cardShadow}
-                        gap="5"
-                        h="100%"
-                        key={item.title}
-                        p="6"
-                        rounded="2xl"
-                      >
-                        <Box
-                          bg={palette.muted}
-                          color={palette.accentText}
-                          p="3"
-                          rounded="xl"
-                          w="fit-content"
-                        >
-                          <ExperienceIcon size={22} />
-                        </Box>
-                        <Stack gap="2">
-                          <Heading as="h3" fontSize="md" lineHeight="1.25">
-                            {item.title}
-                          </Heading>
-                          <Text color={palette.bodyText} fontSize="sm" lineHeight="1.65">
-                            {item.description}
-                          </Text>
-                        </Stack>
-                      </Stack>
-                    );
-                  })}
-                </SimpleGrid>
-              </Stack>
-            </Box>
-
-            <Box as="section" id="skills" scrollMarginTop="96px">
-              <Stack gap="8">
-                <SectionHeading eyebrow={t("skills.eyebrow")} palette={palette} title={t("skills.title")} />
-                <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} gap="5">
-                  {skillGroups.map((group) => (
-                    <Box
-                      as="article"
-                      bg={palette.cardGradient}
-                      border="1px solid"
-                      borderColor={palette.border}
-                      boxShadow={palette.cardShadow}
-                      key={group.title}
-                      p="6"
-                      rounded="2xl"
-                    >
-                      <HStack gap="3" mb="5">
-                        <Code2 color={palette.accentText} size={22} />
-                        <Heading as="h3" fontSize="lg">{group.title}</Heading>
-                      </HStack>
-                      <Flex gap="2" wrap="wrap">
-                        {group.items.map((item) => (
-                          <Badge bg={palette.muted} color={palette.accentText} key={item} px="3" py="1" rounded="full">
-                            {item}
-                          </Badge>
-                        ))}
-                      </Flex>
-                    </Box>
-                  ))}
-                </SimpleGrid>
-              </Stack>
-            </Box>
-
-            <Box as="section" id="projects" scrollMarginTop="96px">
-              <Stack gap="8">
-                <SectionHeading eyebrow={t("projects.eyebrow")} palette={palette} title={t("projects.title")} />
-                <Text color={palette.sectionNote} maxW="720px">
-                  {t("projects.note")}
-                </Text>
-                <SimpleGrid columns={{ base: 1, lg: 3 }} gap="5">
-                  {projects.map((project, index) => {
-                    const ProjectIcon = projectIcons[index] || RadioTower;
-                    const hasLiveUrl = Boolean(project.liveUrl && project.liveUrl !== "#");
-                    const hasRepoUrl = Boolean(project.repoUrl && project.repoUrl !== "#");
-
-                    return (
-                      <Stack
-                        as="article"
-                        bg={palette.cardGradient}
-                        border="1px solid"
-                        borderColor={palette.border}
-                        boxShadow={palette.cardShadow}
-                        gap="5"
-                        key={project.title}
-                        p="6"
-                        rounded="2xl"
-                      >
-                        <Box bg={palette.muted} color={palette.accentText} p="3" rounded="xl" w="fit-content">
-                          <ProjectIcon size={24} />
-                        </Box>
-                        <Stack gap="2">
-                          <Heading as="h3" fontSize="xl" lineHeight="1.2">
-                            {project.title}
-                          </Heading>
-                          <Text color={palette.accentText} fontSize="sm" fontWeight="700">
-                            {project.focus}
-                          </Text>
-                          <Text color={palette.bodyText} lineHeight="1.7">
-                            {project.description}
-                          </Text>
-                        </Stack>
-                        <Flex gap="3" mt="auto" wrap="wrap">
-                          {project.liveUrl ? (
-                            <ProjectActionHoverCard
-                              label={t("projects.live")}
-                              note={project.demoNote}
-                              palette={palette}
-                              url={project.liveUrl}
-                            >
-                              <Button
-                                as="a"
-                                href={project.liveUrl}
-                                rel={hasLiveUrl ? "noopener noreferrer" : undefined}
-                                size="sm"
-                                target={hasLiveUrl ? "_blank" : undefined}
-                                variant="outline"
-                              >
-                                {t("projects.live")}
-                              </Button>
-                            </ProjectActionHoverCard>
-                          ) : null}
-                          {project.repoUrl ? (
-                            <ProjectActionHoverCard
-                              label={t("projects.repo")}
-                              palette={palette}
-                              url={project.repoUrl}
-                            >
-                              <Button
-                                as="a"
-                                bg={palette.buttonGradient}
-                                color={palette.buttonText}
-                                href={project.repoUrl}
-                                rel={hasRepoUrl ? "noopener noreferrer" : undefined}
-                                size="sm"
-                                target={hasRepoUrl ? "_blank" : undefined}
-                              >
-                                {t("projects.repo")}
-                              </Button>
-                            </ProjectActionHoverCard>
-                          ) : null}
-                        </Flex>
-                      </Stack>
-                    );
-                  })}
-                </SimpleGrid>
-              </Stack>
-            </Box>
-
-            <Box as="section" id="contact" scrollMarginTop="96px">
-              <Grid
-                bg={palette.cardGradient}
-                border="1px solid"
-                borderColor={palette.border}
-                boxShadow={palette.glow}
-                gap="8"
-                p={{ base: "6", md: "8" }}
-                rounded="2xl"
-                templateColumns={{ base: "1fr", lg: "0.9fr 1.1fr" }}
-              >
-                <Stack gap="6">
-                  <SectionHeading eyebrow={t("contact.eyebrow")} palette={palette} title={t("contact.title")} />
-                  <Text color={palette.bodyText} lineHeight="1.7">
-                    {t("contact.body")}
+              <Box as="section" id="projects" scrollMarginTop="96px">
+                <Stack gap="8">
+                  <SectionHeading
+                    eyebrow={t("projects.eyebrow")}
+                    palette={palette}
+                    title={t("projects.title")}
+                  />
+                  <Text color={palette.sectionNote} maxW="720px">
+                    {t("projects.note")}
                   </Text>
-                  <Stack gap="3">
-                    <Button as="a" href={socialLinks.email} justifyContent="flex-start" variant="outline">
-                      <Mail size={18} />
-                      {t("contact.email")}
-                    </Button>
-                    <Button as="a" href={socialLinks.calendly} target="_blank" rel="noopener noreferrer" justifyContent="flex-start" variant="outline">
-                      <CalendarDays size={18} />
-                      {t("contact.schedule")}
-                    </Button>
-                  </Stack>
-                </Stack>
-                <Box>
-                  <Heading as="h3" fontSize="xl" mb="5">
-                    {t("contact.formTitle")}
-                  </Heading>
-                  <Box
-                    as="form"
-                    action="https://formspree.io/f/xeqwajpz"
-                    method="POST"
-                    onSubmit={handleContactSubmit}
-                  >
-                    <Stack gap="4">
-                      <Input aria-label={t("contact.name")} name="name" placeholder={t("contact.name")} required {...formFieldStyles} />
-                      <Input aria-label={t("contact.emailPlaceholder")} name="email" placeholder={t("contact.emailPlaceholder")} required type="email" {...formFieldStyles} />
-                      <Input aria-label={t("contact.subject")} name="subject" placeholder={t("contact.subject")} required {...formFieldStyles} />
-                      <Textarea aria-label={t("contact.message")} minH="140px" name="message" placeholder={t("contact.message")} required {...formFieldStyles} />
-                      <Button alignSelf="flex-start" disabled={isContactSubmitting} type="submit" {...heroButtonStyles}>
-                        {isContactSubmitting ? t("contact.sending") : t("contact.send")}
-                      </Button>
-                      {contactSubmitState === "error" ? (
-                        <Text
-                          aria-live="polite"
-                          color={palette.secondary}
-                          fontSize="sm"
-                          role="alert"
-                        >
-                          {t("contact.error")}
-                        </Text>
-                      ) : null}
-                    </Stack>
-                  </Box>
-                </Box>
-              </Grid>
-            </Box>
-          </Stack>
-        </Container>
-      </Box>
+                  <SimpleGrid columns={{ base: 1, lg: 3 }} gap="5">
+                    {projects.map((project, index) => {
+                      const ProjectIcon = projectIcons[index] || RadioTower;
+                      const hasLiveUrl = Boolean(
+                        project.liveUrl && project.liveUrl !== "#",
+                      );
+                      const hasRepoUrl = Boolean(
+                        project.repoUrl && project.repoUrl !== "#",
+                      );
 
-      <Box as="footer" borderTop="1px solid" borderColor={palette.border} py="6">
-        <Container maxW="1180px">
-          <Text color={palette.footerText} fontSize="sm">
-            <Trans
-              i18nKey="footer"
-              components={{
-                name: (
-                  <a
-                    href="https://github.com/DemetrPI/Portfolio"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: "inherit", textDecoration: "underline" }}
-                  >
-                    {t("footerName")}
-                  </a>
-                ),
-              }}
-            />
-          </Text>
-        </Container>
-      </Box>
-      <Toaster toaster={toaster}>
-        {(toast) => (
-          <Toast.Root
-            border="1px solid"
-            borderColor={palette.border}
-            boxShadow={palette.buttonGlow || palette.glow}
-            color={palette.buttonText}
-            style={{ background: palette.buttonGradient }}
-            w={{ base: "calc(100vw - 2rem)", md: "sm" }}
-          >
-            <Toast.Indicator />
-            <Box flex="1" minW="0" pe="4">
-              <Text color="inherit" fontSize="sm" fontWeight="600">
-                {toast.title}
-              </Text>
-            </Box>
-            <Toast.CloseTrigger />
-          </Toast.Root>
-        )}
-      </Toaster>
+                      return (
+                        <Stack
+                          as="article"
+                          bg={palette.cardGradient}
+                          border="1px solid"
+                          borderColor={palette.border}
+                          boxShadow={palette.cardShadow}
+                          gap="5"
+                          key={project.title}
+                          p="6"
+                          rounded="2xl"
+                        >
+                          <Box
+                            bg={palette.muted}
+                            color={palette.accentText}
+                            p="3"
+                            rounded="xl"
+                            w="fit-content"
+                          >
+                            <ProjectIcon size={24} />
+                          </Box>
+                          <Stack gap="2">
+                            <Heading as="h3" fontSize="xl" lineHeight="1.2">
+                              {project.title}
+                            </Heading>
+                            <Text
+                              color={palette.accentText}
+                              fontSize="sm"
+                              fontWeight="700"
+                            >
+                              {project.focus}
+                            </Text>
+                            <Text color={palette.bodyText} lineHeight="1.7">
+                              {project.description}
+                            </Text>
+                          </Stack>
+                          <Flex gap="3" mt="auto" wrap="wrap">
+                            {project.liveUrl ? (
+                              <ProjectActionHoverCard
+                                label={t("projects.live")}
+                                note={project.demoNote}
+                                palette={palette}
+                                url={project.liveUrl}
+                              >
+                                <Button
+                                  as="a"
+                                  href={project.liveUrl}
+                                  rel={
+                                    hasLiveUrl
+                                      ? "noopener noreferrer"
+                                      : undefined
+                                  }
+                                  size="sm"
+                                  target={hasLiveUrl ? "_blank" : undefined}
+                                  variant="outline"
+                                >
+                                  {t("projects.live")}
+                                </Button>
+                              </ProjectActionHoverCard>
+                            ) : null}
+                            {project.repoUrl ? (
+                              <ProjectActionHoverCard
+                                label={t("projects.repo")}
+                                palette={palette}
+                                url={project.repoUrl}
+                              >
+                                <Button
+                                  as="a"
+                                  bg={palette.buttonGradient}
+                                  color={palette.buttonText}
+                                  href={project.repoUrl}
+                                  rel={
+                                    hasRepoUrl
+                                      ? "noopener noreferrer"
+                                      : undefined
+                                  }
+                                  size="sm"
+                                  target={hasRepoUrl ? "_blank" : undefined}
+                                >
+                                  {t("projects.repo")}
+                                </Button>
+                              </ProjectActionHoverCard>
+                            ) : null}
+                          </Flex>
+                        </Stack>
+                      );
+                    })}
+                  </SimpleGrid>
+                </Stack>
+              </Box>
+
+              <Box as="section" id="contact" scrollMarginTop="96px">
+                <Grid
+                  bg={palette.cardGradient}
+                  border="1px solid"
+                  borderColor={palette.border}
+                  boxShadow={palette.glow}
+                  gap="8"
+                  p={{ base: "6", md: "8" }}
+                  rounded="2xl"
+                  templateColumns={{ base: "1fr", lg: "0.9fr 1.1fr" }}
+                >
+                  <Stack gap="6">
+                    <SectionHeading
+                      eyebrow={t("contact.eyebrow")}
+                      palette={palette}
+                      title={t("contact.title")}
+                    />
+                    <Text color={palette.bodyText} lineHeight="1.7">
+                      {t("contact.body")}
+                    </Text>
+                    <Stack gap="3">
+                      <Button
+                        as="a"
+                        href={socialLinks.email}
+                        justifyContent="flex-start"
+                        variant="outline"
+                      >
+                        <Mail size={18} />
+                        {t("contact.email")}
+                      </Button>
+                      <Button
+                        as="a"
+                        href={socialLinks.calendly}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        justifyContent="flex-start"
+                        variant="outline"
+                      >
+                        <CalendarDays size={18} />
+                        {t("contact.schedule")}
+                      </Button>
+                    </Stack>
+                  </Stack>
+                  <Box>
+                    <Heading as="h3" fontSize="xl" mb="5">
+                      {t("contact.formTitle")}
+                    </Heading>
+                    <Box
+                      as="form"
+                      action="https://formspree.io/f/xeqwajpz"
+                      method="POST"
+                      onSubmit={handleContactSubmit}
+                    >
+                      <Stack gap="4">
+                        <Input
+                          aria-label={t("contact.name")}
+                          name="name"
+                          placeholder={t("contact.name")}
+                          required
+                          {...formFieldStyles}
+                        />
+                        <Input
+                          aria-label={t("contact.emailPlaceholder")}
+                          name="email"
+                          placeholder={t("contact.emailPlaceholder")}
+                          required
+                          type="email"
+                          {...formFieldStyles}
+                        />
+                        <Input
+                          aria-label={t("contact.subject")}
+                          name="subject"
+                          placeholder={t("contact.subject")}
+                          required
+                          {...formFieldStyles}
+                        />
+                        <Textarea
+                          aria-label={t("contact.message")}
+                          minH="140px"
+                          name="message"
+                          placeholder={t("contact.message")}
+                          required
+                          {...formFieldStyles}
+                        />
+                        <Button
+                          alignSelf="flex-start"
+                          disabled={isContactSubmitting}
+                          type="submit"
+                          {...heroButtonStyles}
+                        >
+                          {isContactSubmitting
+                            ? t("contact.sending")
+                            : t("contact.send")}
+                        </Button>
+                        {contactSubmitState === "error" ? (
+                          <Text
+                            aria-live="polite"
+                            color={palette.secondary}
+                            fontSize="sm"
+                            role="alert"
+                          >
+                            {t("contact.error")}
+                          </Text>
+                        ) : null}
+                      </Stack>
+                    </Box>
+                  </Box>
+                </Grid>
+              </Box>
+            </Stack>
+          </Container>
+        </Box>
+
+        <Box
+          as="footer"
+          borderTop="1px solid"
+          borderColor={palette.border}
+          py="6"
+        >
+          <Container maxW="1180px">
+            <Text color={palette.footerText} fontSize="sm">
+              <Trans
+                i18nKey="footer"
+                components={{
+                  name: (
+                    <a
+                      href="https://github.com/DmytroPI-dev/Portfolio"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: "inherit", textDecoration: "underline" }}
+                    >
+                      {t("footerName")}
+                    </a>
+                  ),
+                }}
+              />
+            </Text>
+          </Container>
+        </Box>
+        <Toaster toaster={toaster}>
+          {(toast) => (
+            <Toast.Root
+              border="1px solid"
+              borderColor={palette.border}
+              boxShadow={palette.buttonGlow || palette.glow}
+              color={palette.buttonText}
+              style={{ background: palette.buttonGradient }}
+              w={{ base: "calc(100vw - 2rem)", md: "sm" }}
+            >
+              <Toast.Indicator />
+              <Box flex="1" minW="0" pe="4">
+                <Text color="inherit" fontSize="sm" fontWeight="600">
+                  {toast.title}
+                </Text>
+              </Box>
+              <Toast.CloseTrigger />
+            </Toast.Root>
+          )}
+        </Toaster>
       </Box>
     </Theme>
   );
